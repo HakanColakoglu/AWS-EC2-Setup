@@ -7,7 +7,7 @@ import blogRoutes from "./routes/blog_routes.js"; // Import blog routes
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT_BLOGGER || 3004;
+const PORT = process.env.PORT_BLOGGER || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));

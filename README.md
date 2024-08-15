@@ -49,7 +49,7 @@ sudo apt upgrade
 ```
 
 ## 4. Setting Up SSH Keys for Git Repository Access
-
+Do this if you want to use your own git project. If you are using other methods, just skip this part, this is here to guide beginners.
 ### 4.1. Generate an SSH Key Pair
 
 Run the following command to generate a new SSH key pair:
@@ -71,9 +71,7 @@ When prompted, press `Enter` to accept the default file location and optionally 
 2. **Add the SSH Key to Git Repository:**
    - **GitHub:**  
      Go to your GitHub account settings and navigate to **SSH and GPG keys** > **New SSH key**, then paste the key.
-   - **GitLab:**  
-     Go to your GitLab profile settings and navigate to **SSH Keys** > **Add an SSH key**, then paste the key.
-S
+
 
 ## 5. Setting Up Docker Environment with Docker Compose
 
@@ -180,19 +178,19 @@ sudo docker-compose up -d
 ```
 
 This command starts both the Node.js and PostgreSQL containers, installs dependencies, and starts the application. Check if your containers are running.
-
+You should see postgres container running but node-app is not running. 
 ```bash
 sudo docker ps
 ```
 
-In this project, starting both containers at the same time won't be an issue, however, if you try to connect to localhost:3000 then the node-app will shutdown because it will try to access to your database which is not set yet. We start a postgres container here, but we need to create a database and tables in it. 
+Our node-app is trying to connect to a database which does not exit yet. We start a postgres container here, but we need to create a database and tables in it. 
 
 Alternatively, you can start containers one by one. 
 
 ```bash
 sudo docker-compose up -d postgres
 ```
-Then create your database and tables, and start the main app once it is ready. 
+Then create your database and tables, and start the main app once it is ready. Follow along to see how to set up your database.
 ```bash
 sudo docker-compose up -d node
 ```
@@ -218,7 +216,7 @@ Then run the following SQL commands:
 ```sql
 CREATE DATABASE blog;
 CREATE ROLE blog_admin WITH LOGIN PASSWORD 'some_password';
-GRANT ALL PRIVILEGmiES ON DATABASE "blog" TO blog_admin;
+GRANT ALL PRIVILEGES ON DATABASE "blog" TO blog_admin;
 ```
 This will create your database. Now you will need to connect to your database and create a table. Use "\c blog" to connect
 ```sql
@@ -235,11 +233,11 @@ CREATE TABLE blogposts (
 ```
 You will also need to grant access to the user so you can querry from your web application. 
 ```sql
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE blogposts TO blogadmin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE blogposts TO blog_admin;
 ```
 Since 'blogpost' table has serial id, you will also need to give an additional access to your user. 
 ```sql
-GRANT USAGE, SELECT ON SEQUENCE blogposts_id_seq TO blogadmin;
+GRANT USAGE, SELECT ON SEQUENCE blogposts_id_seq TO blog_admin;
 ```
 
 ### 6.3. Exit the PostgreSQL Terminal
@@ -258,7 +256,7 @@ exit
 
 ## 7. Connecting Node.js to PostgreSQL
 
-In your Node.js application, configure the connection to PostgreSQL using the service name `postgres`:
+In your Node.js application, configure the connection to PostgreSQL using the service name `postgres`. This name was defined in your docker-compose file. If you change the service name to something else, update your `host` in here:
 
 ```javascript
 import pg from "pg";
@@ -280,3 +278,17 @@ DB_PASSWORD=some_password
 DB_PORT=5432
 ```
 Normally, you should not hard code these details in your code and always use environment variables and you should never store your .env files somewhere public. It is only for this projects purpose that the .env file is included in the project. Just update the values in .env file according to your own credentials.
+
+Now you can restart your container:
+```bash
+sudo docker-compose up -d node
+```
+
+Stop containers
+```bash
+sudo docker-compose down
+```
+Restart and see if your data was saved in database correctly.
+```bash
+sudo docker-compose up -d
+```
