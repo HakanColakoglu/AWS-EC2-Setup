@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Post</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div id="new-post">
+      <form action="/submitnewpost" method="post">
+        <input
+          id="new-post-header"
+          type="text"
+          name="blogheader"
+          placeholder="Header"
+        /><br />
+        <textarea
+          id="new-post-body"
+          type="text"
+          name="blogbody"
+          placeholder="Text"
+        ></textarea
+        ><br />
+        <input
+          id="new-post-author"
+          type="text"
+          name="blogauthor"
+          placeholder="Auther name"
+        /><br />
+        <input
+          id="new-post-submit-button"
+          type="submit"
+          name="submit"
+          value="Submit"
+        /><br />
+      </form>
+    </div>
+  </body>
+</html>

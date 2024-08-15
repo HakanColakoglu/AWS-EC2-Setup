@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.blogheader %></title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="container">
+        <div id="new-post">
+            <form action="/editpost" method="post">
+                <input type="hidden" name="id" value="<%= post.id %>" />
+                <input id="new-post-header" type="text" name="blogheader" value="<%= post.blogheader %>"><br>
+                <textarea id="new-post-body" type="text" name="blogbody"><%= post.blogbody %></textarea><br>
+                <input id="new-post-author" type="text" name="blogauthor" value="<%= post.blogauthor %>"><br>
+                <input id="new-post-submit-button" type="submit" name="submit" value="Submit"><br>
+            </form>
+    </div>
+</body>
+</html>

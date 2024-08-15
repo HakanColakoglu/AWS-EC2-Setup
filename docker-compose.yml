@@ -1,0 +1,24 @@
+version: '3'
+services:
+  node:
+    image: node:latest
+    container_name: node-app
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm start"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    runtime: runc
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_PASSWORD: yourpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
