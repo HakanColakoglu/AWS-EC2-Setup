@@ -254,6 +254,57 @@ Then exit the container shell:
 exit
 ```
 
+In that case, you can update the section to include instructions specific to using `setup.sql` with `docker-compose`. Here’s how you can modify the documentation:
+
+---
+
+### 6.4. Setting Up PostgreSQL Database with `setup.sql`
+
+If you want to automatize this process and initialize your PostgreSQL database with predefined schema and data, you can use a .sql file. Check out the provided `setup.sql` file. This file contains SQL statements which we manually entered before.
+
+#### Using `setup.sql` with PostgreSQL and `docker-compose`
+
+To use the `setup.sql` file with PostgreSQL in a `docker-compose` setup, follow these steps:
+
+1. **Prepare Your `docker-compose.yml`**:
+   Ensure your `docker-compose.yml` file is correctly configured to use the PostgreSQL image. An example configuration might look like this:
+
+   ```yaml
+   postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_PASSWORD: yourpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+   ```
+
+  
+   The `volumes` section mounts the `setup.sql` file into the container's `/docker-entrypoint-initdb.d/` directory, where it will be automatically executed upon container startup.
+
+2. **Place the `setup.sql` File**:
+   Ensure that your `setup.sql` file is located in the same directory as your `docker-compose.yml` file, or update the path accordingly in the `docker-compose.yml` file.
+
+3. **Start the Services**:
+   Run the following command in the directory where your `docker-compose.yml` is located to start the PostgreSQL container and execute the `setup.sql` file:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Verify the Database Setup**:
+   After the services are up, you can connect to the PostgreSQL database to verify that the schema and data were created as expected:
+   ```bash
+   docker exec -it <container_name> psql -U postgres -d <database_name>
+   ```
+   Replace `<container_name>` and `<database_name>`, in this project you can run:
+   ```bash
+   docker exec -it postgres-db psql -U postgres -d blog
+   ```
+
+
 ## 7. Connecting Node.js to PostgreSQL
 
 In your Node.js application, configure the connection to PostgreSQL using the service name `postgres`. This name was defined in your docker-compose file. If you change the service name to something else, update your `host` in here:
