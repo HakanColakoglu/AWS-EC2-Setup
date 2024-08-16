@@ -260,7 +260,7 @@ In that case, you can update the section to include instructions specific to usi
 
 ### 6.4. Setting Up PostgreSQL Database with `setup.sql`
 
-If you want to automatize this process and initialize your PostgreSQL database with predefined schema and data, you can use a .sql file. Check out the provided `setup.sql` file. This file contains SQL statements which we manually entered before.
+If you want to automatize this process and initialize your PostgreSQL database with predefined schema and data, you can use a .sql file. Check out the provided `setup.sql` file. This file contains SQL statements which we manually entered before. You can read more [here](https://github.com/docker-library/docs/blob/master/postgres/README.md).
 
 #### Using `setup.sql` with PostgreSQL and `docker-compose`
 
